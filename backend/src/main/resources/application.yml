@@ -1,0 +1,37 @@
+DB_SCHEMA: automation
+MIN_LOG_LEVEL: ${LOG_LEVEL:TRACE}
+
+quarkus:
+  http:
+    port: ${PORT:28080}
+    cors: true
+  native:
+    additional-build-args: --initialize-at-run-time=org.apache.zookeeper.Login\,org.apache.commons.lang3.RandomStringUtils
+    resources:
+      includes: publicKey.pem
+  log:
+    min-level: ${MIN_LOG_LEVEL}
+    category:
+      "org.apache.http":
+        level: ${MIN_LOG_LEVEL}
+  datasource:
+    db-kind: sqlite
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    jdbc:
+      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
+#    db-kind: postgresql
+#    username: ${DB_USERNAME:root}
+#    password: ${DB_PASSWORD:root}
+#    jdbc:
+#      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
+  hibernate-orm:
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    log:
+      sql: true
+      bind-parameters: true
+  flyway:
+    migrate-at-start: true
+  swagger-ui:
+    enable: true
+    always-include: true
