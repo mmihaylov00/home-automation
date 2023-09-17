@@ -1,5 +1,6 @@
 package com.homeAutomation.extension.database.data;
 
+import com.homeAutomation.extension.database.entity.BaseEntity;
 import com.homeAutomation.extension.database.query.Query;
 import com.homeAutomation.extension.exception.AppException;
 import com.homeAutomation.extension.exception.code.BaseErrorCode;
@@ -9,11 +10,14 @@ import io.quarkus.panache.common.Sort;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractDataService<Repository extends PanacheRepositoryBase<Entity, ID>, Entity, ID> {
+public abstract class AbstractDataService<Repository extends PanacheRepositoryBase<Entity, ID>,
+        Entity extends BaseEntity<ID>,
+        ID extends Serializable> {
     @Inject
     protected Repository repository;
 
@@ -46,17 +50,23 @@ public abstract class AbstractDataService<Repository extends PanacheRepositoryBa
         if (entityName == null) {
             final String[] typeName = ((ParameterizedType) ((Class<?>) getClass().getGenericSuperclass())
                     .getGenericSuperclass()).getActualTypeArguments()[1].getTypeName().split("\\.");
-            entityName = typeName[typeName.length-1];
+            entityName = typeName[typeName.length - 1];
         }
         return entityName;
     }
 
-    protected PanacheQuery<Entity> find(Query query){
+    protected PanacheQuery<Entity> find(Query query) {
         return this.repository.find(query.getWhere(), query.getParams());
     }
 
-    protected int delete(Query query){
+    protected int delete(Query query) {
         return this.repository.update("deleted = true " + query.getWhere(), query.getParams());
+    }
+
+    protected int delete(Entity entity) {
+        entity.delete();
+        repository.persist(entity);
+        return 1;
     }
 
     public List<Entity> all() {

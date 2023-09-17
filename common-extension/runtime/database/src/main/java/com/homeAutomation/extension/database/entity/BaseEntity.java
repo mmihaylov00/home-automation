@@ -21,20 +21,28 @@ import java.time.OffsetDateTime;
         @TypeDef(name = "jsonb", typeClass = JsonType.class)
 })
 @SuperBuilder
-public abstract class BaseEntity<ID extends Serializable> implements Serializable {
+public abstract class BaseEntity<ID extends Serializable> implements Serializable, DeletableEntity {
     @Transient
     public abstract ID getId();
 
     @CreationTimestamp
     @Column(name = "created_date", nullable = false, updatable = false)
+    @Builder.Default
     private OffsetDateTime createdDate = OffsetDateTime.now();
 
     @UpdateTimestamp
     @Column(name = "modified_date")
+    @Builder.Default
     private OffsetDateTime modifiedDate = OffsetDateTime.now();
 
     @Builder.Default
+    @Column(columnDefinition = "boolean default false")
     private boolean deleted = false;
+
+    @Override
+    public void delete() {
+        this.deleted = true;
+    }
 
     public boolean equals(Object o) {
         if (this == o) return true;

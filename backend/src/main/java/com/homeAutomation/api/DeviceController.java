@@ -17,7 +17,6 @@ import java.util.List;
 @Path("/devices")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Authenticated
 @RolesAllowed(SecurityConstants.Role.CLIENT_TYPE_ADMIN)
 public class DeviceController {
 

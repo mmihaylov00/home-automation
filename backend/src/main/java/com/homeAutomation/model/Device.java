@@ -6,7 +6,7 @@ import com.homeAutomation.model.enums.DeviceType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@Entity(name = "device")
+@Entity(name = "devices")
 public class Device extends LongIDEntity {
 
     @Column(name = "name", nullable = false)
@@ -27,6 +27,15 @@ public class Device extends LongIDEntity {
     @Column(name = "mac_address", nullable = false)
     private String macAddress;
 
-    @Column(name = "mac_address", nullable = false)
+    @Column(name = "provider", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DeviceProvider provider;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "device_groups",
+            joinColumns = {@JoinColumn(name = "device_id")},
+            inverseJoinColumns = {@JoinColumn(name = "group_id")}
+    )
+    private List<Group> groups;
 }
