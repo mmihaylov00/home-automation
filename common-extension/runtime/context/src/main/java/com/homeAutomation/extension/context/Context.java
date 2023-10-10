@@ -8,7 +8,6 @@ import java.util.UUID;
 @Data
 public class Context {
     private static final ThreadLocal<Context> THREADLOCAL = new InheritableThreadLocal<>();
-    private String localIp;
     private String deviceName;
     private String browserInformation;
     private String ip;

@@ -1,4 +1,4 @@
-package com.homeAutomation.filter;
+package com.homeAutomation.interceptor;
 
 import com.homeAutomation.extension.context.Context;
 import com.homeAutomation.extension.exception.AppException;

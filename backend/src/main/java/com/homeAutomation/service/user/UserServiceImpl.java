@@ -23,21 +23,34 @@ public class UserServiceImpl implements UserService {
     SecurityTokenManager securityTokenManager;
 
     public User findById(UUID id) {
-        return this.userDataService.findById(id);
+        User user = this.userDataService.findById(id);
+        if (user.isBlocked()) {
+            throw new AppException(BaseErrorCode.UNAUTHORIZED, "User is blocked");
+        }
+        return user;
     }
 
     @Override
     public AuthResponse authenticate() {
         Context context = Context.get();
         if (context.getUserId() == null) {
-            if (context.getIp() == null || context.getLocalIp() == null) {
-                throw new AppException(BaseErrorCode.UNAUTHORIZED, "Could not authenticate!");
+            if (context.getIp() == null) {
+                throw new AppException(BaseErrorCode.UNAUTHORIZED, "Could not authenticate");
             }
-            context.setUser(User.builder()
-                    .name(context.getDeviceName())
-                    .localIp(context.getLocalIp())
-                    .deviceInformation(context.getBrowserInformation())
-                    .build());
+
+            User user = userDataService.findByIp(context.getIp())
+                    .orElse(userDataService.save(
+                            User.builder()
+                                    .name(context.getDeviceName())
+                                    .localIp(context.getIp())
+                                    .deviceInformation(context.getBrowserInformation())
+                                    .build()
+                    ));
+
+
+            context.setUser(user);
+
+            //todo reserve this device's IP in the router
         }
 
         return authenticate(context.getUser());

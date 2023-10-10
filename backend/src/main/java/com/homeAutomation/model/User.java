@@ -33,6 +33,10 @@ public class User extends UUIDEntity implements ContextUser {
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin = false;
 
+    @Builder.Default
+    @Column(name = "is_blocked", nullable = false)
+    private boolean isBlocked = false;
+
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Task> tasks = Collections.emptyList();

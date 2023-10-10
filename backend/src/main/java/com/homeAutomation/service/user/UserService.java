@@ -7,5 +7,6 @@ import java.util.UUID;
 
 public interface UserService {
     User findById(UUID id);
+
     AuthResponse authenticate();
 }
