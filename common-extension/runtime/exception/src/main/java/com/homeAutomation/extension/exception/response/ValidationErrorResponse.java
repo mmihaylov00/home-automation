@@ -19,7 +19,7 @@ public class ValidationErrorResponse extends ErrorResponse {
         errors = new ArrayList<>();
     }
 
-    public void addError(String field, String message, String code){
+    public void addError(String field, String message, String code) {
         errors.add(new ValidationError(message, field, code));
     }
 
@@ -32,7 +32,7 @@ public class ValidationErrorResponse extends ErrorResponse {
 
         public ValidationError(String message, String field, String code) {
             this.message = message;
-            if(StringUtils.isNotEmpty(field)) this.field = field;
+            if (StringUtils.isNotEmpty(field)) this.field = field;
             this.code = code;
         }
     }

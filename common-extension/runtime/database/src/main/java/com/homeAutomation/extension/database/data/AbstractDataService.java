@@ -63,10 +63,14 @@ public abstract class AbstractDataService<Repository extends PanacheRepositoryBa
         return this.repository.update("deleted = true " + query.getWhere(), query.getParams());
     }
 
-    protected int delete(Entity entity) {
+    protected void delete(Entity entity) {
         entity.delete();
         repository.persist(entity);
-        return 1;
+    }
+
+    protected void softDelete(Entity entity) {
+        entity.setDeleted(true);
+        repository.persist(entity);
     }
 
     public List<Entity> all() {

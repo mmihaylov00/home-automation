@@ -16,6 +16,7 @@ import javax.ws.rs.ext.Provider;
 public class RuntimeExceptionHandler extends InternalErrorLogger implements ExceptionMapper<RuntimeException> {
     private static final String NOT_FOUND_MESSAGE = "Requested resource could not be found!";
     private static final BaseErrorCode NOT_FOUND = BaseErrorCode.RESOURCE_NOT_FOUND;
+
     @Override
     public Response toResponse(RuntimeException e) {
         if (e instanceof NotAllowedException ||

@@ -3,6 +3,7 @@ package com.homeAutomation.extension.security.interceptor;
 import com.homeAutomation.extension.context.Context;
 import com.homeAutomation.extension.exception.AppException;
 import com.homeAutomation.extension.exception.code.BaseErrorCode;
+import com.homeAutomation.extension.security.SecurityConstants;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 import lombok.extern.slf4j.Slf4j;
@@ -30,37 +31,30 @@ public class ContextTokenPopulatingInterceptor {
     public void filter(ContainerRequestContext ctx, ResourceInfo resource) {
         Context context = Context.get();
 
-        if (resource.getResourceClass().isAnnotationPresent(Authenticated.class) ||
-                resource.getResourceMethod().isAnnotationPresent(Authenticated.class) ||
-                resource.getResourceMethod().isAnnotationPresent(RolesAllowed.class))
-            setTokenContext(context);
-
-        //todo set other context data form headers
+        setTokenContext(context, resource);
+        setHeaderContext(context);
     }
 
-    private void setTokenContext(Context context) {
+    private void setTokenContext(Context context, ResourceInfo resource) {
         try {
             JsonWebToken principal = (JsonWebToken) identity.getPrincipal();
             if (Objects.isNull(principal)) return;
 
-            String userId = principal.getClaim("user-id");
+            String userId = principal.getClaim(SecurityConstants.JWT.USER_ID_KEY);
             if (StringUtils.isEmpty(userId)) return;
-//
-//            context.setUserId(UUID.fromString(userId));
-//            String deviceId = principal.getClaim(SecurityConstants.JWT.DEVICE_ID);
-//            if (deviceId != null) {
-//                context.setDeviceId(UUID.fromString(deviceId));
-//                context.setClientType(TokenType.APP);
-//            } else {
-//                String type = principal.getClaim(SecurityConstants.JWT.CLIENT_TYPE);
-//                if (TokenType.INNER.name().equals(type)){
-//                    context.setClientType(TokenType.INNER);
-//                }
-//            }
-        } catch (ClassCastException ignored) {
-        } catch (IllegalArgumentException e) {
-            throw new AppException(BaseErrorCode.INVALID_VALUE, "Invalid Authorization Token");
+            context.setUserId(UUID.fromString(userId));
+
+        } catch (Exception e) {
+            if (resource.getResourceClass().isAnnotationPresent(Authenticated.class) ||
+                    resource.getResourceMethod().isAnnotationPresent(Authenticated.class) ||
+                    resource.getResourceMethod().isAnnotationPresent(RolesAllowed.class)) {
+                throw new AppException(BaseErrorCode.INVALID_VALUE, "Invalid Authorization Token");
+            }
         }
+    }
+
+    private void setHeaderContext(Context context) {
+        //todo set other context data form headers
     }
 
 }

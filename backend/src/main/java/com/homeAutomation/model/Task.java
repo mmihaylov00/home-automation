@@ -1,8 +1,6 @@
 package com.homeAutomation.model;
 
-import com.homeAutomation.extension.database.entity.LongIDEntity;
 import com.homeAutomation.extension.database.entity.UUIDEntity;
-import com.homeAutomation.model.enums.DeviceType;
 import com.homeAutomation.model.enums.TaskTrigger;
 import lombok.*;
 

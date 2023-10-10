@@ -31,6 +31,26 @@ public class Query {
         return new Builder();
     }
 
+    @AllArgsConstructor
+    public enum Comparator {
+        EQUALS("="),
+        LESS_THAN("<"),
+        LESS_THAN_EQUALS("<="),
+        MORE_THAN(">"),
+        MORE_THAN_EQUALS(">="),
+        LIKE("LIKE"),
+        IN("IN");
+
+        private final String symbol;
+    }
+
+    public enum JoinType {
+        INNER,
+        LEFT,
+        RIGHT,
+        FULL
+    }
+
     @NoArgsConstructor
     public static class Builder implements JoinQueryBuilder, GroupQueryBuilder, WhereQueryBuilder, AdditionalWhereQueryBuilder, FromQueryBuilder {
         private final List<Object> params = new ArrayList<>();
@@ -232,25 +252,5 @@ public class Query {
         private boolean isValidString(Object value) {
             return !(value instanceof CharSequence && StringUtils.isBlank((CharSequence) value)) && Objects.nonNull(value);
         }
-    }
-
-    @AllArgsConstructor
-    public enum Comparator {
-        EQUALS("="),
-        LESS_THAN("<"),
-        LESS_THAN_EQUALS("<="),
-        MORE_THAN(">"),
-        MORE_THAN_EQUALS(">="),
-        LIKE("LIKE"),
-        IN("IN");
-
-        private final String symbol;
-    }
-
-    public enum JoinType {
-        INNER,
-        LEFT,
-        RIGHT,
-        FULL
     }
 }

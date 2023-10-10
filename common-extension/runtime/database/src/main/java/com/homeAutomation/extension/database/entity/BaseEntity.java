@@ -6,7 +6,9 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxyHelper;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
@@ -22,22 +24,20 @@ import java.time.OffsetDateTime;
 })
 @SuperBuilder
 public abstract class BaseEntity<ID extends Serializable> implements Serializable, DeletableEntity {
-    @Transient
-    public abstract ID getId();
-
     @CreationTimestamp
     @Column(name = "created_date", nullable = false, updatable = false)
     @Builder.Default
     private OffsetDateTime createdDate = OffsetDateTime.now();
-
     @UpdateTimestamp
     @Column(name = "modified_date")
     @Builder.Default
     private OffsetDateTime modifiedDate = OffsetDateTime.now();
-
     @Builder.Default
     @Column(columnDefinition = "boolean default false")
     private boolean deleted = false;
+
+    @Transient
+    public abstract ID getId();
 
     @Override
     public void delete() {

@@ -2,9 +2,7 @@ package com.homeAutomation.service.device;
 
 import com.homeAutomation.api.dto.DeviceResponse;
 import com.homeAutomation.data.DeviceDataService;
-import com.homeAutomation.extension.context.Context;
 import com.homeAutomation.mapper.DeviceMapper;
-import com.homeAutomation.model.Device;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

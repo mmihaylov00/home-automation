@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.homeAutomation</groupId>
-    <artifactId>common-runtime-parent-deployment</artifactId>
-    <version>1.0.0</version>
-  </parent>
-  <artifactId>common-security-deployment</artifactId>
-  <name>Security Extension - Deployment</name>
-  <dependencies>
-    <dependency>
-      <groupId>com.homeAutomation</groupId>
-      <artifactId>common-security</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.homeAutomation</groupId>
-      <artifactId>common-context-deployment</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-jwt-deployment</artifactId>
-      <version>${quarkus.platform.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-jwt-build-deployment</artifactId>
-      <version>${quarkus.platform.version}</version>
-    </dependency>
-  </dependencies>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.homeAutomation</groupId>
+        <artifactId>common-runtime-parent-deployment</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>common-security-deployment</artifactId>
+    <name>Security Extension - Deployment</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.homeAutomation</groupId>
+            <artifactId>common-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.homeAutomation</groupId>
+            <artifactId>common-context-deployment</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-jwt-deployment</artifactId>
+            <version>${quarkus.platform.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-jwt-build-deployment</artifactId>
+            <version>${quarkus.platform.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -30,7 +30,7 @@ public class AppException extends RuntimeException implements Serializable, Erro
         this.errorCode = errorCode;
     }
 
-    public static AppException fromResponse(ErrorResponse response){
+    public static AppException fromResponse(ErrorResponse response) {
         BaseErrorCode code = BaseErrorCode.valueOf(response.getErrorCode());
         return new AppException(code, response.getMessage());
     }

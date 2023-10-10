@@ -7,10 +7,13 @@ import java.util.UUID;
 
 @Data
 public class Context {
-    private String macAddress;
-    private String ip;
-
     private static final ThreadLocal<Context> THREADLOCAL = new InheritableThreadLocal<>();
+    private String localIp;
+    private String deviceName;
+    private String browserInformation;
+    private String ip;
+    private UUID userId;
+    private ContextUser user;
 
     public static Context get() {
         Context context = THREADLOCAL.get();

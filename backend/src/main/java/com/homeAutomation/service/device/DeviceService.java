@@ -7,5 +7,6 @@ import java.util.UUID;
 
 public interface DeviceService {
     List<DeviceResponse> list();
+
     void create(UUID userId);
 }

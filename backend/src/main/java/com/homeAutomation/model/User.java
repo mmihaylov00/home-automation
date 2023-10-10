@@ -1,5 +1,6 @@
 package com.homeAutomation.model;
 
+import com.homeAutomation.extension.context.ContextUser;
 import com.homeAutomation.extension.database.entity.UUIDEntity;
 import lombok.*;
 
@@ -7,7 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -16,7 +18,7 @@ import java.util.*;
 @Setter
 @ToString
 @Entity(name = "users")
-public class User extends UUIDEntity {
+public class User extends UUIDEntity implements ContextUser {
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -24,8 +26,8 @@ public class User extends UUIDEntity {
     @Column(name = "device_information", nullable = false)
     private String deviceInformation;
 
-    @Column(name = "mac_address", nullable = false)
-    private String macAddress;
+    @Column(name = "local_ip", nullable = false)
+    private String localIp;
 
     @Builder.Default
     @Column(name = "is_admin", nullable = false)

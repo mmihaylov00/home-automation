@@ -2,7 +2,7 @@ package com.homeAutomation.extension.exception.code;
 
 import lombok.AllArgsConstructor;
 
-import static javax.ws.rs.core.Response.*;
+import static javax.ws.rs.core.Response.Status;
 
 @AllArgsConstructor
 public enum BaseErrorCode implements ErrorCode {

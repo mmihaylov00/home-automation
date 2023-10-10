@@ -3,7 +3,9 @@ package com.homeAutomation.model;
 import com.homeAutomation.extension.database.entity.LongIDEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import java.util.Collections;
 import java.util.List;
 

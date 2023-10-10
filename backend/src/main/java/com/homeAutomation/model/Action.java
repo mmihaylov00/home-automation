@@ -5,7 +5,6 @@ import com.homeAutomation.model.enums.ActionType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

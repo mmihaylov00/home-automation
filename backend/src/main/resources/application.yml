@@ -16,16 +16,16 @@ quarkus:
         level: ${MIN_LOG_LEVEL}
   datasource:
     db-kind: sqlite
-#    username: ${DB_USERNAME:root}
-#    password: ${DB_PASSWORD:root}
+    #    username: ${DB_USERNAME:root}
+    #    password: ${DB_PASSWORD:root}
     jdbc:
-#      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
+      #      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
       url: 'jdbc:sqlite::memory:'
-#    db-kind: postgresql
-#    username: ${DB_USERNAME:root}
-#    password: ${DB_PASSWORD:root}
-#    jdbc:
-#      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
+  #    db-kind: postgresql
+  #    username: ${DB_USERNAME:root}
+  #    password: ${DB_PASSWORD:root}
+  #    jdbc:
+  #      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:26257}/${DB_NAME:smart}?currentSchema=${DB_SCHEMA}${DB_CONNECTION_ADDITIONAL_OPTIONS:}
   hibernate-orm:
     physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     log:

@@ -5,7 +5,6 @@ import com.homeAutomation.model.enums.ExecutedTaskStatus;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashMap;
 
 @Builder
 @NoArgsConstructor

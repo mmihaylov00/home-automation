@@ -1,10 +1,9 @@
 package com.homeAutomation.extension.deployment;
 
-import com.homeAutomation.extension.exception.InvalidDataException;
-import com.homeAutomation.extension.exception.handler.BaseExceptionHandler;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.homeAutomation.extension.exception.AppException;
+import com.homeAutomation.extension.exception.InvalidDataException;
 import com.homeAutomation.extension.exception.handler.*;
 import io.quarkus.arc.ArcUndeclaredThrowableException;
 import io.quarkus.deployment.annotations.BuildStep;

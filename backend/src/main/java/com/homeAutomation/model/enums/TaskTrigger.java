@@ -4,6 +4,5 @@ public enum TaskTrigger {
     NFC,
     WIFI_CONNECT,
     ON_TIME,
-    VOICE_COMMAND
-    ;
+    VOICE_COMMAND;
 }

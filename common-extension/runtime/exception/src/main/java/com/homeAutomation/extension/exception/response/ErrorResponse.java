@@ -1,8 +1,8 @@
 package com.homeAutomation.extension.exception.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.homeAutomation.extension.exception.AppException;
 import com.homeAutomation.extension.exception.code.ErrorCode;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
