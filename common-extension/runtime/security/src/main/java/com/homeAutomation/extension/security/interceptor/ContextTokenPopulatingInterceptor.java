@@ -55,6 +55,9 @@ public class ContextTokenPopulatingInterceptor {
 
     private void setHeaderContext(Context context) {
         //todo set other context data form headers
+        if (!Objects.isNull(context.getIp())) {
+            context.setLocalAreaNetwork(context.getIp().startsWith("192.168."));
+        }
     }
 
 }

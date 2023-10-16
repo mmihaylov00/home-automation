@@ -10,6 +10,7 @@ public class Context {
     private static final ThreadLocal<Context> THREADLOCAL = new InheritableThreadLocal<>();
     private String deviceName;
     private String browserInformation;
+    private boolean isLocalAreaNetwork = false;
     private String ip;
     private UUID userId;
     private ContextUser user;

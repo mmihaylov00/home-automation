@@ -34,8 +34,8 @@ public class User extends UUIDEntity implements ContextUser {
     private boolean isAdmin = false;
 
     @Builder.Default
-    @Column(name = "is_blocked", nullable = false)
-    private boolean isBlocked = false;
+    @Column(name = "remote_allowed", nullable = false)
+    private boolean remoteAllowed = false;
 
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     @Builder.Default

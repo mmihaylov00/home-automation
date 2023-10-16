@@ -11,6 +11,7 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.ext.Provider;
+import java.util.Objects;
 import java.util.UUID;
 
 @Provider
@@ -22,13 +23,17 @@ public class ContextUserPopulationInterceptor {
     @ServerRequestFilter(priority = Priorities.USER + 200)
     public void filter(ContainerRequestContext ctx, ResourceInfo resource) {
         Context context = Context.get();
-        UUID userId = context.getUserId();
-        if (userId == null) return;
+        final UUID userId = context.getUserId();
+        if (Objects.isNull(userId)) {
+            if (!context.isLocalAreaNetwork()) {
+                throw new AppException(BaseErrorCode.UNAUTHORIZED, "Not authorized");
+            }
+            return;
+        }
 
-        try {
-            context.setUser(userService.findById(userId));
-        } catch (AppException e) {
-            throw new AppException(BaseErrorCode.INVALID_VALUE, "Invalid Authorization Token");
+        context.setUser(userService.findById(userId));
+        if (!context.getUser().isRemoteAllowed() && !context.isLocalAreaNetwork()) {
+            throw new AppException(BaseErrorCode.UNAUTHORIZED, "Not authorized");
         }
     }
 }

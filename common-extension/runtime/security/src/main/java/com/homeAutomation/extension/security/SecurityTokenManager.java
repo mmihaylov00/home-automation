@@ -22,6 +22,7 @@ public class SecurityTokenManager {
     @Inject
     JWTParser parser;
 
+    // 1 week
     public static long TOKEN_EXPIRATION_TIME = 604_800L;
 
     public String generate(String id, boolean isAdmin) {
@@ -31,7 +32,6 @@ public class SecurityTokenManager {
                 .upn(id)
                 .claim(SecurityConstants.JWT.CLIENT_TYPE_KEY, role)
                 .groups(new HashSet<>(Collections.singletonList(role)))
-                // 1 week
                 .expiresIn(TOKEN_EXPIRATION_TIME)
                 .sign();
     }

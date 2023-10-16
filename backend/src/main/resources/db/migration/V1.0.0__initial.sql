@@ -97,7 +97,8 @@ create table users
     deleted            boolean      not null default false,
     modified_date      datetime,
     device_information varchar(255) not null,
-    is_admin           boolean      not null,
+    is_admin           boolean      not null default false,
+    remove_allowed     boolean      not null default false,
     mac_address        varchar(255) not null,
     name               varchar(255) not null,
     primary key (id)

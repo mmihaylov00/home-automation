@@ -6,4 +6,5 @@ public interface ContextUser {
     UUID getId();
 
     boolean isAdmin();
+    boolean isRemoteAllowed();
 }

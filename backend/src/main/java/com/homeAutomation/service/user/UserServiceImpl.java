@@ -12,6 +12,7 @@ import com.homeAutomation.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Objects;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -24,8 +25,8 @@ public class UserServiceImpl implements UserService {
 
     public User findById(UUID id) {
         User user = this.userDataService.findById(id);
-        if (user.isBlocked()) {
-            throw new AppException(BaseErrorCode.UNAUTHORIZED, "User is blocked");
+        if (user.isDeleted()) {
+            throw new AppException(BaseErrorCode.UNAUTHORIZED, "Invalid Authorization Token");
         }
         return user;
     }
@@ -33,11 +34,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthResponse authenticate() {
         Context context = Context.get();
-        if (context.getUserId() == null) {
-            if (context.getIp() == null) {
-                throw new AppException(BaseErrorCode.UNAUTHORIZED, "Could not authenticate");
-            }
 
+        if (!context.isLocalAreaNetwork()) {
+            //refresh token only from local
+            throw new AppException(BaseErrorCode.UNAUTHORIZED, "Could not authenticate");
+        }
+
+        if (Objects.isNull(context.getUserId())) {
             User user = userDataService.findByIp(context.getIp())
                     .orElse(userDataService.save(
                             User.builder()
