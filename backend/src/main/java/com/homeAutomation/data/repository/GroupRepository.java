@@ -1,4 +1,4 @@
-package com.homeAutomation.repository;
+package com.homeAutomation.data.repository;
 
 import com.homeAutomation.model.Group;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;

@@ -17,7 +17,7 @@ import java.util.List;
 @Entity(name = "actions")
 public class Action extends UUIDEntity {
 
-    @Column(name = "type", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ActionType type;
 

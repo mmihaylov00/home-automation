@@ -20,7 +20,7 @@ import java.util.List;
 @Entity(name = "users")
 public class User extends UUIDEntity implements ContextUser {
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Column(name = "device_information", nullable = false)

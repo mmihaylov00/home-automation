@@ -3,7 +3,7 @@ package com.homeAutomation.data;
 import com.homeAutomation.extension.database.data.AbstractDataService;
 import com.homeAutomation.extension.database.query.Query;
 import com.homeAutomation.model.User;
-import com.homeAutomation.repository.UserRepository;
+import com.homeAutomation.data.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;

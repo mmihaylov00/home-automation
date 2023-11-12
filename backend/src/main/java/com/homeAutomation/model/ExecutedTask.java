@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity(name = "executed_tasks")
 public class ExecutedTask extends LongIDEntity {
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ExecutedTaskStatus status;
 
@@ -24,7 +24,7 @@ public class ExecutedTask extends LongIDEntity {
     private Task task;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "current_action_id", nullable = false)
+    @JoinColumn(name = "current_action_id")
     private Action currentAction;
 
     @ManyToOne(fetch = FetchType.LAZY)

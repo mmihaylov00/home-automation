@@ -17,10 +17,10 @@ import java.util.List;
 @Entity(name = "tasks")
 public class Task extends UUIDEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "trigger", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskTrigger trigger;
 

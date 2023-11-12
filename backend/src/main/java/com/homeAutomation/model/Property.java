@@ -19,13 +19,13 @@ public class Property extends LongIDEntity {
     @JoinColumn(name = "action_id", nullable = false)
     private Action action;
 
-    @Column(name = "key", nullable = false)
+    @Column(nullable = false)
     private String key;
 
-    @Column(name = "value", nullable = false)
+    @Column(nullable = false)
     private String value;
 
-    @Column(name = "type", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PropertyType type;
 }

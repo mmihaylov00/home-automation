@@ -18,7 +18,7 @@ import java.util.List;
 @Entity(name = "groups")
 public class Group extends LongIDEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "groups")

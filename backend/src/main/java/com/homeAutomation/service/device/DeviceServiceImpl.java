@@ -1,5 +1,6 @@
 package com.homeAutomation.service.device;
 
+import com.homeAutomation.api.dto.DeviceRequest;
 import com.homeAutomation.api.dto.DeviceResponse;
 import com.homeAutomation.data.DeviceDataService;
 import com.homeAutomation.mapper.DeviceMapper;
@@ -24,7 +25,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void create(UUID userId) {
-        //todo
+    public void create(UUID userId, DeviceRequest deviceRequest) {
+        deviceDataService.save(mapper.map(deviceRequest));
     }
 }

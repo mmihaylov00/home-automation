@@ -1,16 +1,15 @@
 package com.homeAutomation.api;
 
+import com.homeAutomation.api.dto.DeviceRequest;
 import com.homeAutomation.api.dto.DeviceResponse;
+import com.homeAutomation.extension.context.Context;
 import com.homeAutomation.extension.security.SecurityConstants;
 import com.homeAutomation.service.device.DeviceService;
-import io.quarkus.security.Authenticated;
+import io.quarkus.vertx.web.Body;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -27,4 +26,10 @@ public class DeviceController {
     public List<DeviceResponse> list() {
         return this.deviceService.list();
     }
+
+    @POST
+    public void create(@Body DeviceRequest request) {
+        deviceService.create(Context.get().getUserId(), request);
+    }
+
 }

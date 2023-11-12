@@ -31,6 +31,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-scheduler</artifactId>
+            <version>${quarkus.platform.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkiverse.jdbc</groupId>
             <artifactId>quarkus-jdbc-sqlite</artifactId>
             <version>3.0.0</version>

@@ -23,7 +23,7 @@ create table devices
     created_date  datetime     not null,
     deleted       boolean      not null default false,
     modified_date datetime,
-    mac_address   varchar(255) not null,
+    mac_address   varchar(255),
     name          varchar(255) not null,
     provider      varchar(255) not null,
     type          varchar(255) not null,
@@ -38,7 +38,7 @@ create table executed_tasks
     modified_date          datetime,
     additional_information varchar(255),
     status                 varchar(255) not null,
-    current_action_id      blob         not null,
+    current_action_id      blob,
     task_id                blob         not null,
     triggered_by_id        blob         not null,
     primary key (id)

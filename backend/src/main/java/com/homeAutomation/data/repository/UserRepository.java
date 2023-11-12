@@ -1,11 +1,11 @@
-package com.homeAutomation.repository;
+package com.homeAutomation.data.repository;
 
-import com.homeAutomation.model.Task;
+import com.homeAutomation.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.UUID;
 
 @ApplicationScoped
-public class TaskRepository implements PanacheRepositoryBase<Task, UUID> {
+public class UserRepository implements PanacheRepositoryBase<User, UUID> {
 }

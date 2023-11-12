@@ -60,10 +60,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private AuthResponse authenticate(ContextUser user) {
-        String token = securityTokenManager.generate(user.getId().toString(), user.isAdmin());
-
         return AuthResponse.builder()
-                .token(token)
+                .token(securityTokenManager.generate(user.getId().toString(), user.isAdmin()))
                 .exp(SecurityTokenManager.TOKEN_EXPIRATION_TIME)
                 .build();
     }

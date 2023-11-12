@@ -17,17 +17,17 @@ import java.util.List;
 @Entity(name = "devices")
 public class Device extends LongIDEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "type", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DeviceType type;
 
-    @Column(name = "mac_address", nullable = false)
+    @Column(name = "mac_address")
     private String macAddress;
 
-    @Column(name = "provider", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DeviceProvider provider;
 

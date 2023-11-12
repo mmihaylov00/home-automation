@@ -2,7 +2,7 @@ package com.homeAutomation.data;
 
 import com.homeAutomation.extension.database.data.AbstractDataService;
 import com.homeAutomation.model.Device;
-import com.homeAutomation.repository.DeviceRepository;
+import com.homeAutomation.data.repository.DeviceRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 
