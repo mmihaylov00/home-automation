@@ -8,11 +8,13 @@ import com.homeAutomation.model.enums.ExecutedTaskStatus;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.List;
 
 @ApplicationScoped
 public class ExecutedTaskServiceImpl implements ExecutedTaskService {
     @Inject
     ExecutedTaskDataService dataService;
+
     @Override
     public void create(Task task, User user) {
         dataService.save(ExecutedTask.builder()
@@ -20,5 +22,15 @@ public class ExecutedTaskServiceImpl implements ExecutedTaskService {
                 .task(task)
                 .triggeredBy(user)
                 .build());
+    }
+
+    @Override
+    public List<ExecutedTask> listExecutable() {
+        return dataService.findExecutable();
+    }
+
+    @Override
+    public void save(ExecutedTask task) {
+        dataService.save(task);
     }
 }

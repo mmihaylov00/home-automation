@@ -1,10 +1,12 @@
 package com.homeAutomation.model;
 
-import com.homeAutomation.extension.database.entity.LongIDEntity;
-import com.homeAutomation.model.enums.PropertyType;
+import com.homeAutomation.properties.BaseProperty;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Builder
 @NoArgsConstructor
@@ -13,19 +15,9 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity(name = "properties")
-public class Property extends LongIDEntity {
+public class Property extends BaseProperty {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "action_id", nullable = false)
     private Action action;
-
-    @Column(nullable = false)
-    private String key;
-
-    @Column(nullable = false)
-    private String value;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private PropertyType type;
 }

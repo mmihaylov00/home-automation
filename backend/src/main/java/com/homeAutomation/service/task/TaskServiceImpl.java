@@ -41,7 +41,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskDataService.findById(id);
 
         executedTaskService.create(task, user);
-        actionService.execute(task.getStartAction());
     }
 
 }

@@ -1,7 +1,8 @@
 package com.homeAutomation.service.action;
 
-import com.homeAutomation.model.Action;
+import com.homeAutomation.consumer.FailedTaskException;
+import com.homeAutomation.model.ExecutedTask;
 
 public interface ActionService {
-    void execute(Action action);
+    boolean executeCurrentAction(ExecutedTask task) throws FailedTaskException;
 }
