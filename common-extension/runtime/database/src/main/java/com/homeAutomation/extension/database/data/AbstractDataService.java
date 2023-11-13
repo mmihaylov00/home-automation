@@ -16,26 +16,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractDataService<Repository extends PanacheRepositoryBase<Entity, ID>,
-        Entity extends BaseEntity<ID>,
-        ID extends Serializable> {
+        Entity extends BaseEntity<ID>, ID extends Serializable> {
     @Inject
     protected Repository repository;
 
     private String entityName;
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     public Entity save(Entity entity) {
         repository.persist(entity);
         return entity;
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     public Entity saveAndFlush(Entity entity) {
         repository.persistAndFlush(entity);
         return entity;
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.MANDATORY)
     @SafeVarargs
     public final void saveAll(Entity... entities) {
         repository.persist(Arrays.stream(entities));
@@ -59,22 +58,17 @@ public abstract class AbstractDataService<Repository extends PanacheRepositoryBa
         return this.repository.find(query.getWhere(), query.getParams());
     }
 
-    protected int delete(Query query) {
-        return this.repository.update("deleted = true " + query.getWhere(), query.getParams());
-    }
-
-    protected void delete(Entity entity) {
-        entity.delete();
-        repository.persist(entity);
-    }
-
-    protected void softDelete(Entity entity) {
-        entity.setDeleted(true);
-        repository.persist(entity);
-    }
-
     public List<Entity> all() {
         return repository.list("where deleted = false");
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    public void delete(Entity entity) {
+        if (entity.isDeleted()) {
+            throw new AppException(BaseErrorCode.INVALID_VALUE, String.format("%s with ID %s is already deleted!", getEntityName(), entity.getId()));
+        }
+        entity.setDeleted(true);
+        save(entity);
     }
 
     public List<Entity> all(Sort sort) {

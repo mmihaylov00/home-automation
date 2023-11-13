@@ -14,9 +14,13 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @DynamicUpdate
 @MappedSuperclass
+/*
+ * Please create a sequence and set it as a default
+ * for the id column for each entity extending this class
+ */
 public abstract class LongIDEntity extends BaseEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 }

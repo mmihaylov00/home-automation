@@ -20,7 +20,7 @@ public class ExecutedTasksConsumer {
     @Inject
     ActionService actionService;
 
-    @Scheduled(every = "500ms")
+    @Scheduled(every = "0.5s")
     void consume() {
         List<ExecutedTask> tasks = executedTaskService.listExecutable();
         for (ExecutedTask task : tasks) {

@@ -2,22 +2,25 @@ package com.homeAutomation.extension.database.query.builder;
 
 import com.homeAutomation.extension.database.query.Query;
 
+import java.util.Collection;
 import java.util.Set;
 
-public interface AndQueryBuilder {
+public interface AndQueryBuilder extends GroupByBuilder {
     AndQueryBuilder and(String paramName, Object value);
+    AndQueryBuilder and(String paramName, Object value, boolean isNullCheck);
 
     AndQueryBuilder and(Query query);
 
     AndQueryBuilder and(String paramName, Object value, Query.Comparator comparator);
 
+    AndQueryBuilder andNot(String paramName, Object value);
+    AndQueryBuilder andNot(String paramName, Object value, boolean isNullCheck);
+
     AndQueryBuilder andNull(String paramName);
 
     AndQueryBuilder andNotNull(String paramName);
 
-    AndQueryBuilder andNotDeleted();
+    AndQueryBuilder andContains(Collection<String> columns, Object expected);
 
-    AndQueryBuilder andContains(Set<String> columns, Object expected);
-
-    Query build();
+    <T> AndQueryBuilder andContains(String paramName, Collection<T> values);
 }

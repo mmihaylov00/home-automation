@@ -12,9 +12,9 @@ import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
+@Builder(builderMethodName = "baseBuilder")
 @AllArgsConstructor
+@NoArgsConstructor
 @DynamicUpdate
 @MappedSuperclass
 public class BaseProperty extends LongIDEntity {

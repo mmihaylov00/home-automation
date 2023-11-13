@@ -1,0 +1,29 @@
+@use './settings';
+
+html {
+  overflow-y: auto !important;
+}
+
+.v-application > div {
+  min-height: calc(100dvh) !important;
+  max-height: calc(100dvh) !important;
+}
+
+* {
+  scrollbar-width: auto;
+  scrollbar-color: settings.$toolbar-background settings.$app-bar-background;
+
+  &::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: settings.$app-bar-background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: settings.$toolbar-background;
+    border-radius: 10px;
+    border: 3px solid settings.$app-bar-background;
+  }
+}

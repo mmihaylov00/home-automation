@@ -6,6 +6,7 @@ import com.homeAutomation.model.Action;
 import com.homeAutomation.model.ExecutedTask;
 import com.homeAutomation.properties.ActionProperty;
 import com.homeAutomation.properties.BaseProperty;
+import io.quarkus.arc.All;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ActionServiceImpl implements ActionService {
 
     @Inject
+    @All
     List<BaseAction> actions;
 
     @Override

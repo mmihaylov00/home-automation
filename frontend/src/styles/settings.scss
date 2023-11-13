@@ -1,0 +1,4 @@
+//https://vuetifyjs.com/en/features/sass-variables/#variable-api
+@forward 'vuetify/settings' with (
+  $button-height: 36px //this is default value, but wanted to put something for example
+);

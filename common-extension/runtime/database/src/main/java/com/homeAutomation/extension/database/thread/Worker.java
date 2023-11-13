@@ -12,18 +12,9 @@ public class Worker {
     private static final Duration MAX_OPERATION_TIME = Duration.ofSeconds(5);
 
     public static void runOperations(Runnable... runnableOperations) {
-        List<Uni<Void>> operations = Arrays.stream(runnableOperations).map(runnable -> Uni.createFrom()
-                        .voidItem().invoke(runnable)
-                        .runSubscriptionOn(Infrastructure.getDefaultExecutor()))
+        List<Uni<Void>> operations = Arrays.stream(runnableOperations).map(runnable -> Uni.createFrom().voidItem()
+                        .invoke(runnable).runSubscriptionOn(Infrastructure.getDefaultExecutor()))
                 .collect(Collectors.toList());
         Uni.combine().all().unis(operations).discardItems().await().atMost(MAX_OPERATION_TIME);
-    }
-
-    public static <T> List<T> runOperations(T responseObject, Runnable... runnableOperations) {
-        List<Uni<T>> operations = Arrays.stream(runnableOperations).map(runnable -> Uni.createFrom()
-                        .item(responseObject).invoke(runnable)
-                        .runSubscriptionOn(Infrastructure.getDefaultExecutor()))
-                .collect(Collectors.toList());
-        return Uni.join().all(operations).andCollectFailures().await().atMost(MAX_OPERATION_TIME);
     }
 }

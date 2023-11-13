@@ -1,6 +1,5 @@
 package com.homeAutomation.extension.database.entity;
 
-
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;

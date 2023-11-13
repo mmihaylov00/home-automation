@@ -16,7 +16,7 @@ import java.util.HashSet;
 @ApplicationScoped
 public class SecurityTokenManager {
 
-    @ConfigProperty(name = "mp.jwt.verify.issuer")
+    @ConfigProperty(name = "jwt.issuer")
     String issuer;
 
     @Inject

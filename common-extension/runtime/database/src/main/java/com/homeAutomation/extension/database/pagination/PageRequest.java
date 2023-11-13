@@ -16,4 +16,7 @@ public class PageRequest {
     @QueryParam("pageSize")
     private int pageSize = 20;
 
+    @QueryParam("orderBy")
+    private String orderBy;
+
 }

@@ -21,7 +21,7 @@ public enum ActionProperty {
     }
 
     public BaseProperty getProperty(ExecutedTask task) {
-        return BaseProperty.builder()
+        return BaseProperty.baseBuilder()
                 .key(name())
                 .type(type)
                 .value(executedTaskFunction.apply(task))

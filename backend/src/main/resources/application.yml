@@ -1,6 +1,9 @@
 DB_SCHEMA: automation
 MIN_LOG_LEVEL: ${LOG_LEVEL:TRACE}
 
+jwt:
+  issuer: home-automation
+
 quarkus:
   http:
     port: ${PORT:28080}

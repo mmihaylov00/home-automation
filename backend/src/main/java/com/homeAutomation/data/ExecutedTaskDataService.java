@@ -12,8 +12,8 @@ import java.util.List;
 @ApplicationScoped
 public class ExecutedTaskDataService extends AbstractDataService<ExecutedTaskRepository, ExecutedTask, Long> {
     public List<ExecutedTask> findExecutable() {
-        //todo where status is not COMPLETED
-        return find(Query.builder().where("status", ExecutedTaskStatus.COMPLETED, Query.Comparator.EQUALS)
+        return find(Query.builder()
+                .where("status", ExecutedTaskStatus.COMPLETED, Query.Comparator.NOT_EQUALS)
                 .build()).list();
     }
 }
