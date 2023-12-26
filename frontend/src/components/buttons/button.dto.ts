@@ -1,7 +1,7 @@
-export class ButtonType {
+export interface ButtonType {
   label?: string
   icon?: string
-  clickFunctionName: string
+  emitOnClick: string
   color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error' | string
   type?: 'submit'
   size?: 'x-small' | 'small' | 'default' | 'large' | 'x-large'

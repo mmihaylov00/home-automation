@@ -1,88 +1,99 @@
-import TextInput from '@/components/inputs/TextInput.vue'
-import DropdownInput from '@/components/inputs/DropdownInput.vue'
-import ButtonToggleInput from '@/components/inputs/ButtonToggleInput.vue'
-import type { Component } from 'vue'
-
-export abstract class InputType {
-  abstract readonly component: Component
+interface BaseInputType {
+  type: 'table' | 'button' | 'dropdown' | 'text'
   key: string
   label: string
-  visible?: (form: any) => boolean
-  required?: boolean | ((form: any) => boolean)
-  default?: string | number
-  colSize: number = 4
-
-  constructor(data: InputType) {
-    this.key = data.key
-    this.label = data.label
-    this.visible = data.visible
-    this.required = data.required
-    this.default = data.default
-    this.colSize = data.colSize
-  }
-
-  readonly rules = {
-    required: (value: string) => !!value || 'Field is required!',
-  }
-
-  public inputRules(input: InputType, form: any) {
-    return [
-      input.required == undefined ||
-        (typeof input.required == 'function' && !input.required(form)) ||
-        this.rules.required,
-    ]
-  }
+  visible?: (form: BaseInputType[]) => boolean
+  required?: boolean | ((form: BaseInputType[]) => boolean)
+  default?: string | number | boolean
+  colSize?: number
+  rules?: any
+  value?: unknown
 }
 
-export class MultiValue {
+export interface MultiValue {
   title: string
-  value: string | boolean
+  value: string | number | boolean
 }
 
-export class TextInputType extends InputType {
-  readonly component = TextInput
+export interface TextInputType extends BaseInputType {
+  type: 'text'
   value?: string
   clearable?: boolean
-
-  constructor(data: TextInputType) {
-    super(data)
-    this.value = data.value
-    this.clearable = data.clearable
-  }
 }
 
-export class DropdownInputType extends InputType {
-  readonly component = DropdownInput
+export interface DropdownInputType extends BaseInputType {
+  type: 'dropdown'
   values: MultiValue[]
-
-  constructor(data: DropdownInputType) {
-    super(data)
-    this.values = data.values
-  }
+  value?: MultiValue['value']
 }
 
-export class ButtonToggleInputType extends InputType {
-  readonly component = ButtonToggleInput
+export interface ButtonToggleInputType extends BaseInputType {
+  type: 'button'
   values: MultiValue[]
-
-  constructor(data: ButtonToggleInputType) {
-    super(data)
-    this.values = data.values
-  }
+  value?: string | boolean
 }
 
-export class TableInputColumn {
+export interface TableInputColumn {
   title: string
   key: string
 }
 
-export class TableInputType extends InputType {
-  readonly component = TableInput
+export interface TableInputType extends BaseInputType {
+  type: 'table'
   columns: TableInputColumn[]
-  colSize: number = 12
-
-  constructor(data: TableInputType) {
-    super(data)
-    this.columns = data.columns
-  }
+  clearable?: boolean
+  value: { [key: string]: string | number | undefined }[]
+  // colSize: number = 12
 }
+
+export type TableInputRecord = TableInputType['value'][number]
+
+/**
+ * Combined type with guards for each input type
+ * Add a new guard and interface when there is a new input type to be defined
+ */
+export type InputType = TableInputType | ButtonToggleInputType | DropdownInputType | TextInputType
+export type FilterType = ButtonToggleInputType | DropdownInputType | TextInputType
+
+export function isInputTable(input: InputType): input is TableInputType {
+  return input.type === 'table'
+}
+
+export function isInputButton(input: InputType): input is ButtonToggleInputType {
+  return input.type === 'button'
+}
+
+export function isInputDropdown(input: InputType): input is DropdownInputType {
+  return input.type === 'dropdown'
+}
+
+export function isInputText(input: InputType): input is TextInputType {
+  return input.type === 'text'
+}
+
+export function inputRules(input: InputType, form: any) {
+  const rules = input.rules?.required || ((value: string) => !!value || 'Field is required!')
+  return [
+    input.required == undefined ||
+      (typeof input.required == 'function' && !input.required(form)) ||
+      rules,
+  ]
+}
+
+export function castFormToObject(inputs: InputType[]): { [key: string]: InputType['value'] } {
+  const acc: { [key: InputType['key']]: InputType['value'] } = {}
+  for (const input of inputs) {
+    acc[input.key] = input.value
+  }
+  return acc
+}
+
+export function castFilterToObject<E>(inputs: { key: string; value: E }[]): { [key: string]: E } {
+  const acc: { [key: string]: E } = {}
+  for (const input of inputs) {
+    acc[input.key] = input.value
+  }
+  return acc
+}
+
+export type InputCardForm = InputType[]

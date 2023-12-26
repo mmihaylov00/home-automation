@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import { DropdownInputType } from '@/components/inputs/input.dto'
+import { DropdownInputType } from '@/components/inputs/input.dto.js'
+import { inputRules } from './input.dto.js'
+import { computed } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   input: DropdownInputType
-  form: any
+  modelValue: DropdownInputType['value']
 }>()
-</script>
 
+const emit = defineEmits(['update:modelValue'])
+
+const value = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  },
+})
+</script>
 <template>
   <v-select
     variant="outlined"
-    :rules="input.inputRules(input, form)"
+    :rules="inputRules(input, modelValue)"
     :label="input.label"
     :items="input.values"
-    v-model="form[input.key]" />
+    v-model="value" />
 </template>

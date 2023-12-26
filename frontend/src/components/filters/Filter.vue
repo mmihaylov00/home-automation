@@ -1,56 +1,53 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import InputCard from '@/components/inputs/InputCard.vue'
-import { InputType, TableInputType } from '@/components/inputs/input.dto'
-import router from '@/views/router'
+import { FilterType, castFilterToObject } from '@/components/inputs/input.dto.js'
+import router from '@/views/router.js'
 import { useRoute } from 'vue-router'
-
-const emit = defineEmits(['filter'])
+import { reactive } from 'vue'
 
 const props = defineProps<{
-  inputs: InputType[]
+  inputs: FilterType[]
 }>()
-
-const form: any = ref({})
-
-const defaultPropsCopy = {}
+const emit = defineEmits(['filter', 'update:inputs'])
+const computedInputs = reactive([...props.inputs])
 
 onMounted(() => {
-  if (!props.inputs) return
+  if (!computedInputs) return
+  resetToDefault()
 
-  props.inputs.forEach((value) => {
-    if (value instanceof TableInputType) {
-      form.value[value.key] = value.default || []
-    } else {
-      form.value[value.key] = value.default || ''
-    }
-  })
-
-  Object.assign(defaultPropsCopy, form.value)
-
+  // Fill in all filter properties from URL
   Object.entries(useRoute().query).forEach((entry) => {
-    let value: any = entry[1]
-    if (['true', 'false'].includes(value)) {
-      value = value == 'true'
+    const key = entry[0]
+    const rawValue = entry[1]?.toString() || ''
+    const value = ['true', 'false'].includes(rawValue) ? rawValue === 'true' : rawValue
+
+    const field = computedInputs.find((input) => input.key === key)
+    if (field) {
+      field.value = value
     }
-    form.value[entry[0]] = value
   })
 })
 
-function filterTenants() {
-  emit('filter', form.value)
-  const query = { ...form.value }
-  for (const key in query) {
-    if (query[key] === '') {
-      delete query[key]
-    }
-  }
+function applyFilter() {
+  const formItems = computedInputs
+    .filter((e) => e.value !== '')
+    .map((e) => ({ ...e, value: e.value?.toString() }))
+  const query = castFilterToObject(formItems)
+
+  emit('filter', query)
   router.replace({ query })
 }
 
+const resetToDefault = () => {
+  for (const input of computedInputs) {
+    input.value = 'default' in input ? input.default : ''
+  }
+}
+
 function clearFilters() {
-  Object.assign(form.value, defaultPropsCopy)
-  filterTenants()
+  resetToDefault()
+  applyFilter()
 }
 </script>
 
@@ -58,12 +55,11 @@ function clearFilters() {
   <InputCard
     title="Filter"
     @clear="clearFilters"
-    @filter="filterTenants"
-    :form="form"
-    :inputs="inputs"
+    @filter="applyFilter"
+    :form="computedInputs"
     :buttons="[
-      { label: 'Clear', color: 'error', clickFunctionName: 'clear' },
-      { label: 'Filter', clickFunctionName: 'filter', type: 'submit' },
+      { label: 'Clear', emitOnClick: 'clear', color: 'error' },
+      { label: 'Filter', emitOnClick: 'filter', type: 'submit' },
     ]" />
 </template>
 

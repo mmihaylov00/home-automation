@@ -13,5 +13,10 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   ignorePatterns: ['.eslintrc.cjs', 'dist/'],
-  rules: {},
+  rules: {
+    'vue/multi-word-component-names': 'off',
+    "vue/new-line-between-multi-line-property": ["error", {
+      "minLineOfMultilineProperty": 2
+    }]
+  },
 }

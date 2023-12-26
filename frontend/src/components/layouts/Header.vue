@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NavDrawer from '@/components/layouts/NavDrawer.vue'
 import { mdiAccount, mdiWeatherNight, mdiWhiteBalanceSunny } from '@mdi/js'
-import { useThemeStore } from '@/stores/theme-store'
+import { useThemeStore } from '@/stores/theme.store.js'
 
 defineProps<{
   nav: typeof NavDrawer | undefined
@@ -14,7 +14,6 @@ const themeStore = useThemeStore()
   <v-app-bar>
     <template v-slot:prepend>
       <v-app-bar-nav-icon @click.stop="nav?.toggleDrawer()"></v-app-bar-nav-icon>
-
     </template>
     <template v-slot:append>
       <v-switch
@@ -25,7 +24,12 @@ const themeStore = useThemeStore()
         color="indigo"
         :true-icon="mdiWeatherNight"
         :false-icon="mdiWhiteBalanceSunny"></v-switch>
-      <v-btn class="ma-2" variant="elevated" height="36" :icon="mdiAccount" color="primary"></v-btn>
+      <v-btn
+        class="ma-2"
+        variant="elevated"
+        height="36"
+        :icon="mdiAccount"
+        color="primary"></v-btn>
     </template>
   </v-app-bar>
 </template>

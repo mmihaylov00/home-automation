@@ -1,77 +1,147 @@
 <script setup lang="ts">
-import { TableInputType } from '@/components/inputs/input.dto'
+import { TableInputRecord, TableInputType } from '@/components/inputs/input.dto.js'
 import { nextTick, onMounted, reactive, watch } from 'vue'
-import { mdiCloseCircle } from '@mdi/js'
+import { mdiCloseThick } from '@mdi/js'
 
 const props = defineProps<{
   input: TableInputType
-  form: any
+  modelValue: TableInputType['value']
 }>()
 
-const data = reactive<any>([])
+const tableFieldsValues = reactive<TableInputRecord[]>([])
 
-watch(data, async () => {
-  if (Object.values(data[data.length - 1]).filter((value) => !value).length == 0) {
+watch(tableFieldsValues, async () => {
+  // Ensure that a new item will be added if the last item in the array has a value
+  if (
+    Object.values(tableFieldsValues[tableFieldsValues.length - 1]).filter((value) => !value)
+      .length == 0
+  ) {
     addEmpty()
+  }
+
+  // Ensure that there are no unnecessary field lines
+  if (
+    tableFieldsValues.length > 1 &&
+    Object.values(tableFieldsValues.slice(-2).flatMap((e) => Object.values(e))).every(
+      (e) => e === ''
+    )
+  ) {
+    tableFieldsValues.splice(-1)
   }
 })
 
 onMounted(() => {
-  for (const item of props.form[props.input.key]) {
-    let row: any = {}
+  const tableInfo = props.modelValue
+  if (!Array.isArray(tableInfo)) {
+    return
+  }
+
+  for (const item of tableInfo) {
+    let row: TableInputRecord = {}
     props.input.columns.forEach((column) => (row[column.key] = item[column.key]))
-    data.push(row)
+    tableFieldsValues.push(row)
   }
   addEmpty()
 })
 
-function addEmpty() {
-  let row: any = {}
+function addEmpty(position?: number) {
+  let row: TableInputRecord = {}
   props.input.columns.forEach((column) => (row[column.key] = ''))
-  data.push(row)
-}
-
-async function remove(index: number) {
-  data.splice(index, 1)
-}
-
-async function type(e: InputEvent, id) {
-  const split = e.target._value.split(/\s+/gm)
-  let len = split.length
-  if (len > 2) len++
-
-  for (let i = 0; i < len; i++) {
-    const element = document.getElementById(`td-${id + i}`)
-    if (!element) {
-      i--
-      addEmpty()
-      await nextTick()
-      continue
-    }
-    let property = JSON.parse(element.attributes['property'].value)
-    data[property['index']][property['columnKey']] = split[i] || ''
-    element.focus()
+  if (position) {
+    tableFieldsValues.splice(position, 0, row)
+  } else {
+    tableFieldsValues.push(row)
   }
 }
 
-function getJsonProperty(index, key) {
-  return `{ "index": ${index}, "columnKey": "${key}" }`
+async function remove(index: number) {
+  tableFieldsValues.splice(index, 1)
+}
+
+async function onValueChange(e: Event, id: number, columnKey: string) {
+  const fieldValue = (e.target as HTMLInputElement).value
+  const splitBySpaces = fieldValue.split(/\s+/gm) || []
+  const columns = props.input.columns.map((c) => c.key)
+
+  let currentId = id
+  let currentColumnKey = columnKey
+  let field = e.target as HTMLInputElement
+
+  // Set value to current field
+  tableFieldsValues[currentId][currentColumnKey] = splitBySpaces.shift()
+
+  // Set values for all other fields, separated by space
+  for (const inputPart of splitBySpaces) {
+    // Calculate next key
+    currentColumnKey = columns[columns.indexOf(currentColumnKey) + 1]
+
+    // Append blank space in next position
+    if (!currentColumnKey) {
+      addEmpty(currentId + 1)
+      currentId += 1
+      currentColumnKey = columns[0]
+    }
+
+    // Ensure that always the last field is focused
+    await nextTick()
+    field = getNeighbourField(field)
+    field.focus()
+
+    // Update value
+    tableFieldsValues[currentId][currentColumnKey] = inputPart
+  }
+}
+
+/**
+ * Finds the next or previous text field and moves the cursor focus to that item
+ */
+function getNeighbourField(
+  elem: HTMLInputElement,
+  neighbour: 'next' | 'previous' = 'next'
+): HTMLInputElement {
+  const items = Array.from(elem.form?.elements || []).filter(
+    (e) => e.getAttribute('type') === 'text'
+  )
+  const currentIndex = items.indexOf(elem)
+  return items[currentIndex + (neighbour === 'next' ? 1 : -1)] as HTMLInputElement
+}
+
+function onPressEnter(e: Event) {
+  // Ensure that the field has a non empty value before focusing the next item
+  const fieldValue = (e.target as HTMLInputElement).value
+  if (fieldValue.length) {
+    getNeighbourField(e.target as HTMLInputElement)?.focus()
+  }
+}
+
+function onPressBackspace(e: Event) {
+  // If the field is empty, focus on the previous field
+  const fieldValue = (e.target as HTMLInputElement).value
+  if (!fieldValue.length) {
+    e.preventDefault()
+    getNeighbourField(e.target as HTMLInputElement, 'previous')?.focus()
+  }
 }
 </script>
 
 <template>
-  <h3>{{ input.label }}</h3>
-  <v-table density="comfortable">
+  <v-table
+    density="comfortable"
+    style="width: 100%">
     <thead>
       <tr>
         <td></td>
-        <td v-for="column in input.columns">
+        <td
+          v-for="(column, index) in input.columns"
+          :key="index">
           {{ column.title }}
         </td>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, index) in data">
+      <tr
+        v-for="(row, index) in tableFieldsValues"
+        :key="index">
         <td style="width: 2%">
           {{ index + 1 }}
         </td>
@@ -79,32 +149,32 @@ function getJsonProperty(index, key) {
           style="width: 48%"
           colspan="1"
           v-for="(column, cIndex) of input.columns"
+          :key="cIndex"
           class="pa-0 px-1">
           <v-text-field
-            :id="`td-${index * input.columns.length + cIndex}`"
-            :property="getJsonProperty(index, column.key)"
             variant="solo-filled"
-            hide-details
             class="my-1"
-            @input="(e) => type(e, index * input.columns.length + cIndex)"
+            hide-details
+            @keydown.backspace="(e: Event) => onPressBackspace(e)"
+            @input="(e: Event) => onValueChange(e, index, column.key)"
+            @keyup.enter="(e: Event) => onPressEnter(e)"
             :clearable="input.clearable !== false"
             :placeholder="column.title"
-            v-model="data[index][column.key]" />
+            v-model="tableFieldsValues[index][column.key]" />
         </td>
         <td style="width: 2%">
-          <v-hover v-if="index < data.length - 1">
+          <v-hover v-if="index < tableFieldsValues.length - 1">
             <template v-slot:default="{ isHovering, props }">
-              <v-chip
+              <v-btn
+                tabindex="-1"
                 v-bind="props"
-                rounded
+                size="x-small"
                 color="error"
-                size="0"
+                :icon="mdiCloseThick"
                 :class="{ 'on-hover': isHovering }"
-                style="padding: 3px"
                 @click="() => remove(index)"
                 variant="flat">
-                <v-icon size="14" color="white" :icon="mdiCloseCircle" />
-              </v-chip>
+              </v-btn>
             </template>
           </v-hover>
         </td>
@@ -114,16 +184,12 @@ function getJsonProperty(index, key) {
 </template>
 
 <style scoped lang="scss">
-h3 {
-  font-size: 20px;
-  font-weight: unset;
-}
-
-.v-chip {
+.v-btn {
+  scale: 0.7;
   transition: all 0.3s ease-in-out;
 
   &.on-hover {
-    scale: 1.2;
+    scale: 0.9;
   }
 
   &:not(.on-hover) {

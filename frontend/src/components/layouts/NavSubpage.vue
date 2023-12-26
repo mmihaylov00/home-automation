@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from '@/views/router'
+import router from '@/views/router.js'
 import { mdiArrowLeft } from '@mdi/js'
 
 const props = defineProps<{
@@ -20,7 +20,11 @@ function back() {
     <v-col cols="12">
       <v-card variant="tonal">
         <v-card-title>
-          <v-btn :prepend-icon="mdiArrowLeft" @click="back">Back</v-btn>
+          <v-btn
+            :prepend-icon="mdiArrowLeft"
+            @click="back"
+            >Back</v-btn
+          >
         </v-card-title>
       </v-card>
     </v-col>

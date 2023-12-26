@@ -40,7 +40,18 @@
             <artifactId>quarkus-jdbc-sqlite</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>se.michaelthelin.spotify</groupId>
+            <artifactId>spotify-web-api-java</artifactId>
+            <version>8.3.4</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <profiles>
         <profile>
             <id>native</id>

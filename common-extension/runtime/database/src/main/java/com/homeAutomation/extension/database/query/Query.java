@@ -33,7 +33,6 @@ public class Query {
         return new Builder();
     }
 
-    //TODO: Implement having - should be the same as where
     @NoArgsConstructor
     public static class Builder implements JoinQueryBuilder, ThenGroupQueryBuilder, BaseQueryBuilder, AdditionalWhereQueryBuilder, ThenOrderQueryBuilder, BuildQueryBuilder, OrderQueryBuilder {
         private final List<Object> params = new ArrayList<>();

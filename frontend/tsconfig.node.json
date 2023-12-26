@@ -2,7 +2,7 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "types": ["node"]
   }
 }

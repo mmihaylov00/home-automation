@@ -48,7 +48,6 @@ public class FormatExceptionHandler implements ExceptionMapper<InvalidFormatExce
         } else if (Objects.equals(OffsetDateTime.class, c)) {
             return DATE_TYPE_MESSAGE;
         } else if (c.isEnum()) {
-            //todo enum is not working for some reason
             return ENUM_TYPE_MESSAGE;
         }
         return UNKNOWN_TYPE_MESSAGE;

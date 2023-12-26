@@ -4,8 +4,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
-import router from '@/views/router'
-import themes from '@/themes/themes'
+import router from '@/views/router.js'
+import themes from '@/themes/themes.js'
 
 // Vuetify
 import '@/styles/settings.scss'
@@ -19,7 +19,7 @@ import * as components from 'vuetify/components'
 import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
 import Sankey from 'highcharts/modules/sankey'
-import Organization from 'highcharts/modules/organization'
+import Organization from 'highcharts/modules/organization.js'
 
 const vuetify = createVuetify({
   theme: {
